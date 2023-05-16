@@ -1,8 +1,8 @@
-package me.hsgamer.gamesinthebox.exampleexpansion;
+package me.hsgamer.gamesinthebox.shootthebat;
 
 import me.hsgamer.hscore.expansion.common.Expansion;
 
-public class ExampleExpansion implements Expansion {
+public class ShootTheBat implements Expansion {
     @Override
     public boolean onLoad() {
         return true;
