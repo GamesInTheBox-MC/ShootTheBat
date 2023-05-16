@@ -1,0 +1,54 @@
+package me.hsgamer.gamesinthebox.shootthebat.feature;
+
+import me.hsgamer.gamesinthebox.game.simple.SimpleGameArena;
+import me.hsgamer.gamesinthebox.game.simple.feature.SimplePointFeature;
+import me.hsgamer.gamesinthebox.shootthebat.ShootTheBat;
+import me.hsgamer.minigamecore.base.Feature;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Bat;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
+
+public class ListenerFeature implements Feature, Listener {
+    private final ShootTheBat expansion;
+    private final SimpleGameArena arena;
+
+    public ListenerFeature(ShootTheBat expansion, SimpleGameArena arena) {
+        this.expansion = expansion;
+        this.arena = arena;
+    }
+
+    private BatFeature getBatFeature() {
+        return this.arena.getFeature(BatFeature.class);
+    }
+
+    private SimplePointFeature getPointFeature() {
+        return this.arena.getFeature(SimplePointFeature.class);
+    }
+
+    public void register() {
+        Bukkit.getPluginManager().registerEvents(this, expansion.getPlugin());
+    }
+
+    public void unregister() {
+        HandlerList.unregisterAll(this);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBatDeath(EntityDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+
+        if (!(entity instanceof Bat)) return;
+
+        Player player = entity.getKiller();
+        if (player == null) return;
+
+        if (!getBatFeature().contains(entity)) return;
+        getPointFeature().applyPoint(player.getUniqueId(), ShootTheBat.POINT_KILL);
+    }
+}
