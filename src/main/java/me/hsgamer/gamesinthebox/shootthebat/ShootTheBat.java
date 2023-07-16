@@ -57,4 +57,10 @@ public class ShootTheBat extends TemplateGameExpansion {
     public TemplateGameEditor getEditor(TemplateGame game) {
         return new GameEditor(game);
     }
+
+    @Override
+    public void onReload() {
+        super.onReload();
+        messageConfig.reloadConfig();
+    }
 }
