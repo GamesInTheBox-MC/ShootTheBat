@@ -17,18 +17,18 @@ import org.bukkit.event.entity.EntityDeathEvent;
 public class ListenerFeature implements Feature, Listener {
     private final ShootTheBat expansion;
     private final SimpleGameArena arena;
+    private BatFeature batFeature;
+    private SimplePointFeature pointFeature;
 
     public ListenerFeature(ShootTheBat expansion, SimpleGameArena arena) {
         this.expansion = expansion;
         this.arena = arena;
     }
 
-    private BatFeature getBatFeature() {
-        return this.arena.getFeature(BatFeature.class);
-    }
-
-    private SimplePointFeature getPointFeature() {
-        return this.arena.getFeature(SimplePointFeature.class);
+    @Override
+    public void init() {
+        this.batFeature = this.arena.getFeature(BatFeature.class);
+        this.pointFeature = this.arena.getFeature(SimplePointFeature.class);
     }
 
     public void register() {
@@ -48,7 +48,7 @@ public class ListenerFeature implements Feature, Listener {
         Player player = entity.getKiller();
         if (player == null) return;
 
-        if (!getBatFeature().contains(entity)) return;
-        getPointFeature().applyPoint(player.getUniqueId(), ShootTheBat.POINT_KILL);
+        if (!batFeature.contains(entity)) return;
+        pointFeature.applyPoint(player.getUniqueId(), ShootTheBat.POINT_KILL);
     }
 }
