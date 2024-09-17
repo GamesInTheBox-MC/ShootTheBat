@@ -33,16 +33,16 @@ public class BatFeature extends EntityFeature {
 
     @Override
     protected @Nullable Entity createEntity(Location location) {
-        return location.getWorld().spawn(location, Bat.class, bat -> {
-            bat.setHealth(2.0D);
-            bat.setGlowing(true);
+        Bat bat = location.getWorld().spawn(location, Bat.class);
+        bat.setHealth(2.0D);
+        bat.setGlowing(true);
 
-            String nameTag = Util.getRandomColorizedString(nameTags, "");
-            if (!nameTag.isEmpty()) {
-                bat.setCustomName(nameTag);
-                bat.setCustomNameVisible(true);
-            }
-        });
+        String nameTag = Util.getRandomColorizedString(nameTags, "");
+        if (!nameTag.isEmpty()) {
+            bat.setCustomName(nameTag);
+            bat.setCustomNameVisible(true);
+        }
+        return bat;
     }
 
     public List<String> getNameTags() {
